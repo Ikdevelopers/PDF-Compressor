@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\PDFCompressor.Core\PDFCompressor.Core.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>..\..\assets\app_icon.ico</ApplicationIcon>
+    <AssemblyName>PDFCompressor</AssemblyName>
+    <RootNamespace>PDFCompressor.App</RootNamespace>
+    <AssemblyTitle>PDF Compressor</AssemblyTitle>
+    <Product>PDF Compressor</Product>
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <Company>PDF Compressor Desktop</Company>
+    <Copyright>Copyright © 2026</Copyright>
+    <Description>Professional local PDF compression desktop application</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\assets\app_icon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>app_icon.ico</Link>
+    </Content>
+  </ItemGroup>
+
+</Project>

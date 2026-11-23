@@ -1,0 +1,20 @@
+# Build results
+[Bb]in/
+[Oo]bj/
+build/
+*.user
+*.suo
+.vs/
+*.log
+
+# Temp files & DBs
+TestInstall*/
+*.db-shm
+*.db-wal
+vclayout/
+7z_full/
+*.tmp
+
+# Visual Studio files
+.vscode/
+*.DotSettings.user
