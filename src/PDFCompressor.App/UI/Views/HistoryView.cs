@@ -107,8 +107,6 @@ namespace PDFCompressor.App.UI.Views
             filterBar.Controls.Add(_btnClearAll);
             topPanel.Controls.Add(filterBar);
 
-            mainPanel.Controls.Add(topPanel);
-
             // Center DataGridView
             _grid = new DataGridView
             {
@@ -130,7 +128,7 @@ namespace PDFCompressor.App.UI.Views
             };
 
             _grid.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Date & Time", DataPropertyName = "DateStr", Width = 145 });
-            _grid.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "File Name", DataPropertyName = "FileName", Width = 230 });
+            _grid.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "File Name", DataPropertyName = "FileName", Width = 230, AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill, FillWeight = 100 });
             _grid.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Original", DataPropertyName = "OriginalSizeStr", Width = 100 });
             _grid.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Compressed", DataPropertyName = "CompressedSizeStr", Width = 105 });
             _grid.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Saved", DataPropertyName = "SavedStr", Width = 100 });
@@ -185,8 +183,14 @@ namespace PDFCompressor.App.UI.Views
             bottomPanel.Controls.Add(bottomButtons);
             bottomPanel.Controls.Add(_lblStatus);
 
+            // STRICT DOCKING ORDER: Add gridContainer, bottomPanel, topPanel and send top & bottom to back
             mainPanel.Controls.Add(gridContainer);
             mainPanel.Controls.Add(bottomPanel);
+            mainPanel.Controls.Add(topPanel);
+
+            topPanel.SendToBack();
+            bottomPanel.SendToBack();
+            gridContainer.BringToFront();
 
             Controls.Add(mainPanel);
         }

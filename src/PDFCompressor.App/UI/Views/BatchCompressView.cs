@@ -123,13 +123,11 @@ namespace PDFCompressor.App.UI.Views
                 Height = 110,
                 Width = 900,
                 AllowMultipleFiles = true,
-                Margin = new Padding(0, 0, 0, 10)
+                Margin = new Padding(0, 0, 0, 14)
             };
             _dropZone.SetLabels("Drag and drop multiple PDF files or folders here", "Files will be added to the queue below");
             _dropZone.FilesSelected += files => AddFiles(files);
             topPanel.Controls.Add(_dropZone);
-
-            mainPanel.Controls.Add(topPanel);
 
             // Responsive width resize for toolbar & dropzone
             Resize += (s, e) =>
@@ -159,7 +157,7 @@ namespace PDFCompressor.App.UI.Views
                 Font = new Font("Segoe UI", 9.25f)
             };
 
-            _grid.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "File Name", DataPropertyName = "FileName", Width = 280 });
+            _grid.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "File Name", DataPropertyName = "FileName", Width = 280, AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill, FillWeight = 100 });
             _grid.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Original Size", DataPropertyName = "OriginalSizeStr", Width = 110 });
             _grid.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Status", DataPropertyName = "Status", Width = 120 });
             _grid.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Compressed Size", DataPropertyName = "CompressedSizeStr", Width = 125 });
@@ -236,8 +234,15 @@ namespace PDFCompressor.App.UI.Views
                 bottomButtons.Width = Math.Max(700, bottomPanel.Width);
             };
 
+            // STRICT DOCKING ORDER: Add gridContainer, bottomPanel, topPanel, and send top & bottom to back
+            // so gridContainer (Dock = Fill) occupies only the exact space between them.
             mainPanel.Controls.Add(gridContainer);
             mainPanel.Controls.Add(bottomPanel);
+            mainPanel.Controls.Add(topPanel);
+
+            topPanel.SendToBack();
+            bottomPanel.SendToBack();
+            gridContainer.BringToFront();
 
             Controls.Add(mainPanel);
         }

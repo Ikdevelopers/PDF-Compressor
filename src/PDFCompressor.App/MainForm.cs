@@ -34,7 +34,6 @@ namespace PDFCompressor.App
         private ToolStripStatusLabel _archLabel = null!;
 
         // Sidebar Navigation Buttons
-        private ModernButton _btnNavHome = null!;
         private ModernButton _btnNavCompress = null!;
         private ModernButton _btnNavBatch = null!;
         private ModernButton _btnNavHistory = null!;
@@ -60,7 +59,7 @@ namespace PDFCompressor.App
             ApplyTheme();
             AppTheme.ThemeChanged += ApplyTheme;
 
-            NavigateTo("Home");
+            NavigateTo("Compress");
         }
 
         private void InitializeComponent()
@@ -138,8 +137,8 @@ namespace PDFCompressor.App
             var brandPanel = new Panel
             {
                 Dock = DockStyle.Top,
-                Height = 74,
-                Padding = new Padding(6, 10, 6, 6)
+                Height = 64,
+                Padding = new Padding(6, 4, 6, 6)
             };
             var lblLogo = new Label
             {
@@ -158,34 +157,35 @@ namespace PDFCompressor.App
             };
             brandPanel.Controls.Add(lblSub);
             brandPanel.Controls.Add(lblLogo);
-            _sidebarPanel.Controls.Add(brandPanel);
 
-            // Navigation Container: Vertical FlowLayoutPanel to PREVENT ANY BUTTON OVERLAP
+            // Navigation Container: Vertical FlowLayoutPanel
             var navContainer = new FlowLayoutPanel
             {
                 Dock = DockStyle.Fill,
                 FlowDirection = FlowDirection.TopDown,
                 WrapContents = false,
                 AutoScroll = false,
-                Padding = new Padding(0, 10, 0, 0),
+                Padding = new Padding(0, 16, 0, 0),
                 Margin = new Padding(0)
             };
 
-            _btnNavHome = CreateNavButton("Dashboard", () => NavigateTo("Home"));
             _btnNavCompress = CreateNavButton("Compress PDF", () => NavigateTo("Compress"));
             _btnNavBatch = CreateNavButton("Batch Compression", () => NavigateTo("Batch"));
             _btnNavHistory = CreateNavButton("History", () => NavigateTo("History"));
             _btnNavSettings = CreateNavButton("Settings", () => NavigateTo("Settings"));
             _btnNavAbout = CreateNavButton("About", () => NavigateTo("About"));
 
-            navContainer.Controls.Add(_btnNavHome);
             navContainer.Controls.Add(_btnNavCompress);
             navContainer.Controls.Add(_btnNavBatch);
             navContainer.Controls.Add(_btnNavHistory);
             navContainer.Controls.Add(_btnNavSettings);
             navContainer.Controls.Add(_btnNavAbout);
 
+            // Send brandPanel to back so navContainer docks to Fill strictly below brandPanel
             _sidebarPanel.Controls.Add(navContainer);
+            _sidebarPanel.Controls.Add(brandPanel);
+            brandPanel.SendToBack();
+            navContainer.BringToFront();
 
             // 3. Content Panel (Fill)
             _contentPanel = new Panel
@@ -243,8 +243,7 @@ namespace PDFCompressor.App
             _contentPanel.Controls.Clear();
 
             // Highlight active button and un-highlight others
-            _btnNavHome.Style = section == "Home" ? ButtonStyle.Primary : ButtonStyle.Ghost;
-            _btnNavCompress.Style = section == "Compress" ? ButtonStyle.Primary : ButtonStyle.Ghost;
+            _btnNavCompress.Style = (section == "Compress" || section == "Home") ? ButtonStyle.Primary : ButtonStyle.Ghost;
             _btnNavBatch.Style = section == "Batch" ? ButtonStyle.Primary : ButtonStyle.Ghost;
             _btnNavHistory.Style = section == "History" ? ButtonStyle.Primary : ButtonStyle.Ghost;
             _btnNavSettings.Style = section == "Settings" ? ButtonStyle.Primary : ButtonStyle.Ghost;
@@ -254,12 +253,11 @@ namespace PDFCompressor.App
 
             UserControl activeControl = section switch
             {
-                "Compress" => _compressView,
                 "Batch" => _batchView,
                 "History" => _historyView,
                 "Settings" => _settingsView,
                 "About" => _aboutView,
-                "Home" or _ => _homeView
+                "Compress" or "Home" or _ => _compressView
             };
 
             if (section == "Home") _homeView.RefreshData();
